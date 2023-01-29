@@ -1,0 +1,47 @@
+---
+
+formatter: "markdown"
+version: ""
+content: |-
+  ## Module Release Latest Version
+  | Version |
+  |:-------:|
+  | $VERSION  |
+
+
+  {{ .Providers }}
+  {{ .Requirements }}
+  {{ .Modules  }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+  {{ .Resources }}
+
+  ## Caution
+
+  *This documentation is automatically generated with Terraform-docs and must be modified via its .terraform-docs.yml file*
+
+  For more information please go to [Terraform-docs](https://terraform-docs.io)
+output:
+  file: "README.md"
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+sort:
+  enabled: true
+  by: name
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: true
+  escape: true
+  hide-empty: false
+  html: true
+  indent: 2
+  lockfile: true
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true

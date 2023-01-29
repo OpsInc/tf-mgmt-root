@@ -1,0 +1,6 @@
+# Local .terraform directories
+**/.terraform/*
+
+# Dependency Lock File
+**/.terraform.lock.hcl
+
