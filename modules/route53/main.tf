@@ -1,7 +1,10 @@
 locals {
+
+  env = var.env == "production" ? "" : "-${var.env}"
+
   # Fetch each project from var.projects and create list of maps
   projects = {
-    for project in var.projects : project.name => project if project.manage_dns_zone == true
+    for project in var.projects : "${project.name}${local.env}" => project if project.manage_dns_zone == true
   }
 
   # 1st loop ---> Fetch each project from var.projects to create a list
@@ -13,8 +16,8 @@ locals {
     for project in var.projects : [
       for record in project.dns_records : merge(
         record,
-        { project_name = project.name },
-        { project_zone = "${project.name}.${project.zone_name}" }
+        { project_name = "${project.name}${local.env}" },
+        { project_zone = "${project.name}${local.env}.${project.zone_name}" }
       )
     ] if project.manage_dns_zone == true
   ])
@@ -22,8 +25,8 @@ locals {
   # Create a list of SANs per project
   # Using sort() to always have the SANs listed in the same order
   san_list_per_project = {
-    for project in local.projects : project.name => sort(concat(
-      [for record in project.dns_records : "${record.name}.${project.name}.${project.zone_name}"],
+    for project in local.projects : "${project.name}${local.env}" => sort(concat(
+      [for record in project.dns_records : "${record.name}.${project.name}${local.env}.${project.zone_name}"],
     ))
   }
 
@@ -32,12 +35,12 @@ locals {
   #          ---> Generate new fields for the DNS cert validation trough CNAME creation in each zone
   validation_cname = flatten([
     for project in local.projects : [
-      for cname in aws_acm_certificate.cert[project.name].domain_validation_options : {
+      for cname in aws_acm_certificate.cert["${project.name}${local.env}"].domain_validation_options : {
         fqdn    = cname.domain_name
         name    = cname.resource_record_name
         record  = cname.resource_record_value
         type    = cname.resource_record_type
-        zone_id = aws_route53_zone.create_zones[project.name].id
+        zone_id = aws_route53_zone.create_zones["${project.name}${local.env}"].id
       }
     ]
   ])
@@ -59,7 +62,7 @@ resource "aws_route53_zone" "create_zones" {
   for_each = local.projects
 
   # name = each.value.zone_name
-  name = "${each.value.name}.${each.value.zone_name}"
+  name = "${each.value.name}${local.env}.${each.value.zone_name}"
 
   tags = merge(
     var.common_tags,
@@ -72,7 +75,7 @@ resource "aws_route53_record" "create_zone_ns" {
 
   zone_id = data.aws_route53_zone.fetch_parent[each.key].zone_id
   # name    = each.value.zone_name
-  name    = "${each.value.name}.${each.value.zone_name}"
+  name    = "${each.value.name}${local.env}.${each.value.zone_name}"
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.create_zones[each.key].name_servers
@@ -121,5 +124,5 @@ resource "aws_route53_record" "create_cert_validation_CNAME" {
 resource "aws_acm_certificate_validation" "validate" {
   for_each = local.projects
 
-  certificate_arn = aws_acm_certificate.cert[each.value.name].arn
+  certificate_arn = aws_acm_certificate.cert["${each.value.name}${local.env}"].arn
 }

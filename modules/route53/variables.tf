@@ -3,6 +3,11 @@ variable "common_tags" {
   type        = map(string)
 }
 
+variable "env" {
+  description = "Environment to de deployed to"
+  type        = string
+}
+
 variable "projects" {
   description = "Map of all projects with config"
   type = list(object({

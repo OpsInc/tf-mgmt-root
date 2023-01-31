@@ -12,7 +12,7 @@ variable "secret_key" {
 }
 
 variable "env" {
-  description = "Environment to de deployed to"
+  description = "Environment to be deployed to"
   type        = string
 }
 

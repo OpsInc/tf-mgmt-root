@@ -24,7 +24,7 @@ No providers.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | AWS Access Key | `string` | `""` | no |
-| <a name="input_env"></a> [env](#input\_env) | Environment to de deployed to | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | Environment to be deployed to | `string` | n/a | yes |
 | <a name="input_projects"></a> [projects](#input\_projects) | Map of all projects with config | <pre>list(object({<br>    name            = string<br>    manage_dns_zone = bool<br>    zone_name       = string<br>    dns_records = list(object({<br>      type    = string<br>      name    = string<br>      records = string<br>    }))<br>  }))</pre> | n/a | yes |
 | <a name="input_secret_key"></a> [secret\_key](#input\_secret\_key) | AWS Secret Key | `string` | `""` | no |
 ## Outputs
