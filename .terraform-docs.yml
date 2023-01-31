@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 
 formatter: "markdown"
 version: ""
@@ -21,6 +22,7 @@ content: |-
   *This documentation is automatically generated with Terraform-docs and must be modified via its .terraform-docs.yml file*
 
   For more information please go to [Terraform-docs](https://terraform-docs.io)
+
 output:
   file: "README.md"
   mode: inject

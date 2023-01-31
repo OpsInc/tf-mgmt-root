@@ -1,4 +1,4 @@
-env = "sandbox"
+env = "dev"
 
 projects = [
   {
