@@ -1,4 +1,5 @@
-env = "dev"
+env          = "dev"
+project_name = "mgmt"
 
 projects = [
   {
@@ -8,3 +9,10 @@ projects = [
     dns_records     = []
   },
 ]
+
+s3 = {
+  s3_buckets = {
+    name = ["forms"]
+    acl  = "private"
+  }
+}
