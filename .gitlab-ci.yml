@@ -6,16 +6,18 @@ stages:
   - code_check
   - apply_sbx
   - destroy_sbx
-  - git_tag
+  - post_merge
   - apply_dev
 
 include:
   - project: 'nodeai/pipeline-templates'
-    ref: main
+    # ref: main
+    ref: feature/add-terraform-doc
     file:
       - 'git/actions.yml'
       - 'terraform/commands.yml'
       - 'terraform/scans.yml'
+      - 'terraform/docs.yml'
 
 ########################
 ### Pre Merge
@@ -104,7 +106,12 @@ terraform_destroy_sbx:
 ### Post Merge
 ########################
 git_actions_tag:
-  stage: git_tag
+  stage: post_merge
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'  # only when merged to main
+
+terraform_docs_readme:
+  stage: post_merge
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'  # only when merged to main
 
