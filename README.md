@@ -7,7 +7,9 @@
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.52.0 |
 ## Requirements
 
 | Name | Version |
@@ -18,23 +20,26 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_wlf_dns"></a> [wlf\_dns](#module\_wlf\_dns) | ./modules/route53 | n/a |
+| <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
+| <a name="module_s3_buckets"></a> [s3\_buckets](#module\_s3\_buckets) | ./modules/s3 | n/a |
+| <a name="module_s3_logging"></a> [s3\_logging](#module\_s3\_logging) | ./modules/s3 | n/a |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_key"></a> [access\_key](#input\_access\_key) | AWS Access Key | `string` | `""` | no |
-| <a name="input_env"></a> [env](#input\_env) | Environment to be deployed to | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | Environment to deploy to | `string` | n/a | yes |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | The project name | `string` | n/a | yes |
 | <a name="input_projects"></a> [projects](#input\_projects) | Map of all projects with config | <pre>list(object({<br>    name            = string<br>    manage_dns_zone = bool<br>    zone_name       = string<br>    dns_records = list(object({<br>      type    = string<br>      name    = string<br>      records = string<br>    }))<br>  }))</pre> | n/a | yes |
-| <a name="input_secret_key"></a> [secret\_key](#input\_secret\_key) | AWS Secret Key | `string` | `""` | no |
+| <a name="input_s3"></a> [s3](#input\_s3) | Map of S3 configuration | <pre>map(object({<br>    name = list(string)<br>    acl  = string<br>  }))</pre> | n/a | yes |
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_fetch_parent"></a> [fetch\_parent](#output\_fetch\_parent) | n/a |
+No outputs.
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_kms_alias.create_alias_s3_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
+| [aws_kms_key.create_kms_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 
 ## Caution
 
