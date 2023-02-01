@@ -11,8 +11,7 @@ stages:
 
 include:
   - project: 'nodeai/pipeline-templates'
-    # ref: main
-    ref: feature/add-terraform-doc
+    ref: main
     file:
       - 'git/actions.yml'
       - 'terraform/commands.yml'
