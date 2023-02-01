@@ -54,10 +54,6 @@ data "aws_route53_zone" "fetch_parent" {
   # name = trim(each.value.zone_name, "${each.value.name}.")
 }
 
-output "fetch_parent" {
-  value = data.aws_route53_zone.fetch_parent
-}
-
 resource "aws_route53_zone" "create_zones" {
   for_each = local.projects
 

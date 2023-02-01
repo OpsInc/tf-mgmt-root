@@ -1,18 +1,10 @@
-variable "access_key" {
-  description = "AWS Access Key"
-  type        = string
-
-  default = ""
-}
-variable "secret_key" {
-  description = "AWS Secret Key"
-  type        = string
-
-  default = ""
-}
-
 variable "env" {
-  description = "Environment to be deployed to"
+  description = "Environment to deploy to"
+  type        = string
+}
+
+variable "project_name" {
+  description = "The project name"
   type        = string
 }
 
@@ -27,5 +19,13 @@ variable "projects" {
       name    = string
       records = string
     }))
+  }))
+}
+
+variable "s3" {
+  description = "Map of S3 configuration"
+  type = map(object({
+    name = list(string)
+    acl  = string
   }))
 }

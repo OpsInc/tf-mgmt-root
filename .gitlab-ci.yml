@@ -3,9 +3,9 @@
 
 stages:
   - init
-  - lint
+  - code_check
   - apply_sbx
-  - destroy
+  - destroy_sbx
   - git_tag
   - apply_dev
 
@@ -15,19 +15,32 @@ include:
     file:
       - 'git/actions.yml'
       - 'terraform/commands.yml'
+      - 'terraform/scans.yml'
 
 ########################
 ### Pre Merge
 ########################
-git_actions_gating:
+git_version_gating:
   stage: init
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'  # only on merge requests
     - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'  # if it's a push to a branch and there is an open merge request: never run it
       when: never
 
+terraform_scan_tfsec:
+  stage: code_check
+  variables:
+    TFVARS_PATH: "vars"
+    ENVIRONMENT: 'sandbox'
+    TERRAFORM_DIR: '.'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'  # only on merge requests
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'  # if it's a push to a branch and there is an open merge request: never run it
+      when: never
+    - if: $CI_COMMIT_REF_NAME =~ /^feature/
+
 terraform_cmd_validate:
-  stage: lint
+  stage: code_check
   variables:
     TERRAFORM_DIR: '.'
   rules:
@@ -37,7 +50,7 @@ terraform_cmd_validate:
     - if: $CI_COMMIT_REF_NAME =~ /^feature/
 
 terraform_cmd_fmt:
-  stage: lint
+  stage: code_check
   variables:
     TERRAFORM_DIR: '.'
   rules:
@@ -48,7 +61,7 @@ terraform_cmd_fmt:
 
 terraform_plan_sbx:
   extends: .terraform_cmd_plan
-  stage: lint
+  stage: code_check
   variables:
     TFVARS_PATH: "vars"
     ENVIRONMENT: 'sandbox'
@@ -76,7 +89,7 @@ terraform_apply_sbx:
 
 terraform_destroy_sbx:
   extends: .terraform_cmd_destroy
-  stage: destroy
+  stage: destroy_sbx
   variables:
     TFVARS_PATH: "vars"
     ENVIRONMENT: 'sandbox'
