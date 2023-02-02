@@ -60,17 +60,13 @@ resource "aws_route53_zone" "create_zones" {
   # name = each.value.zone_name
   name = "${each.value.name}${local.env}.${each.value.zone_name}"
 
-  tags = merge(
-    var.common_tags,
-    { project_name = each.value.name },
-  )
+  tags = var.common_tags
 }
 
 resource "aws_route53_record" "create_zone_ns" {
   for_each = local.projects
 
   zone_id = data.aws_route53_zone.fetch_parent[each.key].zone_id
-  # name    = each.value.zone_name
   name    = "${each.value.name}${local.env}.${each.value.zone_name}"
   type    = "NS"
   ttl     = "30"
@@ -95,7 +91,7 @@ resource "aws_acm_certificate" "cert" {
 
   validation_method = "DNS"
 
-  tags = merge(var.common_tags, { project_name = each.key })
+  tags = var.common_tags
 
   lifecycle {
     create_before_destroy = true
