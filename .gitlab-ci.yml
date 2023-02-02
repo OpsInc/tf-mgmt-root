@@ -6,7 +6,8 @@ stages:
   - code_check
   - apply_sbx
   - destroy_sbx
-  - post_merge
+  - post_merge_git_tag
+  - post_merge_terra_doc
   - apply_dev
 
 include:
@@ -104,14 +105,13 @@ terraform_destroy_sbx:
 ########################
 ### Post Merge
 ########################
-
 git_actions_tag:
-  stage: post_merge
+  stage: post_merge_git_tag
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'  # only when merged to main
 
 terraform_docs_readme:
-  stage: post_merge
+  stage: post_merge_terra_doc
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'  # only when merged to main
 
