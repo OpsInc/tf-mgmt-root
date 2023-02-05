@@ -2,7 +2,7 @@
 # yamllint disable rule:line-length
 
 .rule_skip-ci: &rule_skip-ci
-  - if: 'CI_COMMIT_MESSAGE =~ "\[skip ci\]"'
+  - if: 'CI_COMMIT_MESSAGE =~ "\[skip pipeline]"'
 
 stages:
   - init
