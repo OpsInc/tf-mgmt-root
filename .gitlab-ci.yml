@@ -34,7 +34,6 @@ git_version_gating:
     - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'  # if it's a push to a branch and there is an open merge request: never run it
       when: never
 
-
 terraform_scan_tfsec:
   stage: code_check
   variables:
