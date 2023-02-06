@@ -1,3 +1,4 @@
-output "bucket_arn_list" {
-  value = aws_s3_bucket.create_bucket
+output "created_buckets" {
+  description = "Export all created buckets"
+  value       = aws_s3_bucket.create_bucket
 }

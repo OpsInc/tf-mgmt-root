@@ -3,7 +3,7 @@ variable "common_tags" {
   type        = map(string)
 }
 
-variable "env" {
+variable "environment" {
   description = "Environment to de deployed to"
   type        = string
 }

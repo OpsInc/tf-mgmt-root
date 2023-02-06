@@ -2,7 +2,8 @@
 resource "aws_s3_bucket" "create_bucket" {
   for_each = toset(var.buckets)
 
-  bucket = "${var.project_name}-${each.value}-${var.environment}"
+  bucket        = "${each.value}-${var.environment}"
+  force_destroy = var.environment == "sandbox" ? true : false
 
   tags = var.common_tags
 }
@@ -35,6 +36,8 @@ resource "aws_s3_bucket_versioning" "s3_versioning" {
   }
 }
 
+# Cloudfront does not natively handles KMS, it needs to have a Lambda@Edge to decrypt/encrypt
+#tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
   for_each = toset(var.buckets)
 

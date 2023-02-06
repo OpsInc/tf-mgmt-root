@@ -1,6 +1,6 @@
 locals {
 
-  env = var.env == "production" ? "" : "-${var.env}"
+  env = var.environment == "production" ? "" : "-${var.environment}"
 
   # Fetch each project from var.projects and create list of maps
   projects = {

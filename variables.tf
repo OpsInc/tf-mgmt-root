@@ -21,11 +21,3 @@ variable "projects" {
     }))
   }))
 }
-
-variable "s3" {
-  description = "Map of S3 configuration"
-  type = map(object({
-    name = list(string)
-    acl  = string
-  }))
-}
