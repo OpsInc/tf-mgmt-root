@@ -44,8 +44,3 @@ variable "logged" {
   description = "This enables the bucket to send logs to a logging bucket"
   type        = bool
 }
-
-variable "project_name" {
-  description = "The name for the current project, it allows us to differentiate each deployed resources"
-  type        = string
-}
