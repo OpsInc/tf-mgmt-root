@@ -5,17 +5,18 @@ variable "acm_certs" {
 
 variable "bucket_log" {
   description = "Bucket Access Log"
-  type        = string
-}
-
-variable "buckets" {
-  description = "Bucket list"
   type        = any
 }
+
 
 variable "common_tags" {
   description = "Tags per brands"
   type        = map(string)
+}
+
+variable "domain_name" {
+  description = "Domaine name for project"
+  type        = string
 }
 
 variable "environment" {
@@ -23,28 +24,19 @@ variable "environment" {
   type        = string
 }
 
+variable "origin_bucket" {
+  description = "Bucket list"
+  type        = any
+}
+
 variable "price_class" {
   description = "PriceClass for the Cloudfront distributions"
   type        = string
 }
 
-variable "project_name" {
+variable "project" {
   description = "Project name for ressource suffix"
-  type        = string
-}
-
-variable "projects" {
-  description = "Map of all projects with config"
-  type = list(object({
-    name            = string
-    manage_dns_zone = bool
-    zone_name       = string
-    dns_records = list(object({
-      type    = string
-      name    = string
-      records = string
-    }))
-  }))
+  type        = map(string)
 }
 
 variable "route53_zones" {

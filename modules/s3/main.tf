@@ -2,7 +2,7 @@
 resource "aws_s3_bucket" "create_bucket" {
   for_each = toset(var.buckets)
 
-  bucket        = "${each.value}-${var.environment}"
+  bucket        = each.key
   force_destroy = var.environment == "sandbox" ? true : false
 
   tags = var.common_tags
@@ -11,14 +11,14 @@ resource "aws_s3_bucket" "create_bucket" {
 resource "aws_s3_bucket_acl" "bucket_acl" {
   for_each = toset(var.buckets)
 
-  bucket = aws_s3_bucket.create_bucket[each.value].id
+  bucket = aws_s3_bucket.create_bucket[each.key].id
   acl    = var.acl
 }
 
 resource "aws_s3_bucket_public_access_block" "block_public" {
   for_each = toset(var.buckets)
 
-  bucket = aws_s3_bucket.create_bucket[each.value].id
+  bucket = aws_s3_bucket.create_bucket[each.key].id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -29,7 +29,7 @@ resource "aws_s3_bucket_public_access_block" "block_public" {
 resource "aws_s3_bucket_versioning" "s3_versioning" {
   for_each = toset(var.buckets)
 
-  bucket = aws_s3_bucket.create_bucket[each.value].id
+  bucket = aws_s3_bucket.create_bucket[each.key].id
 
   versioning_configuration {
     status = "Enabled"
@@ -41,7 +41,7 @@ resource "aws_s3_bucket_versioning" "s3_versioning" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
   for_each = toset(var.buckets)
 
-  bucket = aws_s3_bucket.create_bucket[each.value].id
+  bucket = aws_s3_bucket.create_bucket[each.key].id
 
   rule {
     bucket_key_enabled = false
@@ -68,7 +68,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
 resource "aws_s3_bucket_logging" "log_buckets" {
   for_each = var.logged == true ? toset(var.buckets) : toset([])
 
-  bucket        = aws_s3_bucket.create_bucket[each.value].id
-  target_bucket = var.bucket_log
-  target_prefix = "s3_log/${each.value}"
+  bucket        = aws_s3_bucket.create_bucket[each.key].id
+  target_bucket = var.bucket_log.id
+  target_prefix = "s3_log/${each.key}"
 }
