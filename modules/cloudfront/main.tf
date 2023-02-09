@@ -1,57 +1,48 @@
 ########################################
-###              LOCALS              ###
+###              Locals              ###
 ########################################
-locals {
-  # Fetch each project from var.projects and create list of maps
-  projects = {
-    for project in var.projects : "${project.name}-${var.environment}" => project
-  }
-}
+# locals {
+#   cloudfront_name = "${var.project.name}-${var.environment}"
+# }
 
 ########################################
 ###            CloudFront            ###
 ########################################
 resource "aws_cloudfront_origin_access_control" "create_OAC" {
-  name                              = "access-control-${var.project_name}-${var.environment}"
-  description                       = "S3 Policy for project ${var.project_name}-${var.environment}"
+  name                              = "access-control-${var.domain_name}"
+  description                       = "S3 Policy for Project ${var.domain_name}"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
-  for_each = local.projects
-
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "${upper(each.key)} project"
+  comment             = upper(var.domain_name)
   default_root_object = "index.html"
   price_class         = var.price_class
-  aliases             = ["${each.key}.${each.value.zone_name}"]
+  aliases             = [var.domain_name]
 
   tags = var.common_tags
 
   logging_config {
     include_cookies = false
-    bucket          = var.bucket_log
-    prefix          = each.key
+    bucket          = var.bucket_log.bucket_domain_name
+    prefix          = var.domain_name
   }
 
-  dynamic "origin" {
-    for_each = var.buckets
+  origin {
+    domain_name = var.origin_bucket.bucket_regional_domain_name
+    origin_id   = var.origin_bucket.id
 
-    content {
-      domain_name = origin.value.bucket_regional_domain_name
-      origin_id   = origin.value.id
-
-      origin_access_control_id = aws_cloudfront_origin_access_control.create_OAC.id
-    }
+    origin_access_control_id = aws_cloudfront_origin_access_control.create_OAC.id
   }
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.buckets[each.value.name].id
+    target_origin_id = var.origin_bucket.id
 
     forwarded_values {
       query_string = false
@@ -76,23 +67,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn            = var.acm_certs[each.key].arn
+    acm_certificate_arn            = var.acm_certs.arn
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "TLSv1.2_2021"
-  }
-
-  custom_error_response {
-    error_code            = 404
-    error_caching_min_ttl = 10
-    response_page_path    = "/"
-    response_code         = 200
-  }
-
-  custom_error_response {
-    error_code            = 403
-    error_caching_min_ttl = 10
-    response_page_path    = "/"
-    response_code         = 200
   }
 
   # Waf will be added shorlty
@@ -101,15 +78,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 }
 
 resource "aws_route53_record" "create_cf_A_record" {
-  for_each = var.route53_zones
-
-  zone_id = each.value.zone_id
-  name    = each.value.name
+  zone_id = var.route53_zones.id
+  name    = var.route53_zones.name
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution[each.key].domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution[each.key].hosted_zone_id
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }

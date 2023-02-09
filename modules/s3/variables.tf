@@ -15,7 +15,7 @@ variable "acl" {
 
 variable "bucket_log" {
   description = "The bucket name used to send logs to"
-  type        = string
+  type        = any
   default     = ""
 }
 

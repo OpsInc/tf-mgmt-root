@@ -2,71 +2,86 @@ locals {
   common_tags = {
     environment          = var.env
     managed_by_terraform = true
-    project              = var.project_name
+    project              = var.project.name
   }
 
-  # Create a list composed of only the name of each projects
-  projects_list = [
-    for project in var.projects : project.name
-  ]
+  # apps = {
+  #   for app in var.apps : var.env == "production" ? "${app.name}-${var.project.name}" : "${app.name}-${var.project.name}-${var.env}" => app
+  # }
 
-  # Fetch each project from var.projects and create list of maps
-  projects = {
-    for project in var.projects : "${project.name}-${var.env}" => project
+  apps = {
+    for app in var.apps : app.name => app
   }
+
+  domain_name = var.env == "production" ? "${var.project.name}.${var.project.zone_name}" : "${var.project.name}-${var.env}.${var.project.zone_name}"
+
+  # bucket_logging_name = flatten([
+  #   for s3 in ["access-log"] :
+  #   [for key, app in local.apps : "${s3}-${key}"]
+  # ])
+
+  # buckets_list = flatten([
+  #   for s3 in var.s3 :
+  #   [for key, app in local.apps : "${s3}-${key}"]
+  # ])
 }
 
 module "dns" {
   source = "./modules/route53"
 
-  common_tags = local.common_tags
+  domain_name = local.domain_name
+  apps        = local.apps
+
   environment = var.env
-  projects    = var.projects
+  project     = var.project
+
+  common_tags = local.common_tags
 }
 
 module "s3_logging" {
   source = "./modules/s3"
 
-  buckets = ["mgmt-access-log"]
+  buckets = ["access-log-${local.domain_name}"]
 
-  acl = "private"
-  # kms_arn = aws_kms_key.create_kms_s3.arn
+  acl     = "private"
   kms_arn = ""
   logged  = false # This is the logging bucket
 
-  common_tags = local.common_tags
   environment = var.env
+  common_tags = local.common_tags
 }
 
 module "s3_buckets" {
   source = "./modules/s3"
 
-  buckets = local.projects_list
+  buckets = [for s3 in var.s3 : "${s3}-${local.domain_name}"]
 
   acl        = "private"
-  bucket_log = module.s3_logging.created_buckets["mgmt-access-log"].id
+  bucket_log = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
   kms_arn    = ""
   logged     = true
 
-  common_tags = local.common_tags
   environment = var.env
+  common_tags = local.common_tags
 }
 
 module "cloudfront" {
   source = "./modules/cloudfront"
 
-  buckets       = module.s3_buckets.created_buckets
-  bucket_log    = module.s3_logging.created_buckets["mgmt-access-log"].bucket_domain_name
+  origin_bucket = module.s3_buckets.created_buckets["frontend-${local.domain_name}"]
+  bucket_log    = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
   acm_certs     = module.dns.acm_certs
   route53_zones = module.dns.route53_zones
   # web_acl_id = module.waf_cloudfront.web_acl_arn
 
-  projects    = var.projects
-  environment = var.env
 
-  common_tags  = local.common_tags
-  project_name = var.project_name
-  price_class  = "PriceClass_100"
+  domain_name = local.domain_name
+  environment = var.env
+  project     = var.project
+
+  price_class = "PriceClass_100"
+
+  common_tags = local.common_tags
 
   depends_on = [
     module.s3_buckets,

@@ -1,18 +1,9 @@
-data "aws_s3_bucket" "fetch_buckets" {
-  for_each = local.projects
-
-  bucket = each.key
-
-  depends_on = [
-    module.s3_buckets,
-    module.s3_logging,
-  ]
+locals {
+  bucket = module.s3_buckets.created_buckets["frontend-${local.domain_name}"]
 }
 
 resource "aws_s3_bucket_policy" "apply_OAC" {
-  for_each = local.projects
-
-  bucket = data.aws_s3_bucket.fetch_buckets[each.key].id
+  bucket = local.bucket.id
   policy = jsonencode(
     {
       Version = "2012-10-17",
@@ -28,10 +19,10 @@ resource "aws_s3_bucket_policy" "apply_OAC" {
             ])
           },
           Action   = "s3:GetObject",
-          Resource = "${data.aws_s3_bucket.fetch_buckets[each.key].arn}/*"
+          Resource = "${local.bucket.arn}/*"
           Condition = {
             StringEquals = {
-              "AWS:SourceArn" = module.cloudfront.cloudfront_distributions[each.key].arn
+              "AWS:SourceArn" = module.cloudfront.cloudfront_distributions.arn
             }
           }
         }

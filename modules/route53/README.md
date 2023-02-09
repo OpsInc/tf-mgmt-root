@@ -16,14 +16,11 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment to de deployed to | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | Environment to de deployed to | `string` | n/a | yes |
 | <a name="input_projects"></a> [projects](#input\_projects) | Map of all projects with config | <pre>list(object({<br>    name            = string<br>    manage_dns_zone = bool<br>    zone_name       = string<br>    dns_records = list(object({<br>      type    = string<br>      name    = string<br>      records = string<br>    }))<br>  }))</pre> | n/a | yes |
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_acm_certs"></a> [acm\_certs](#output\_acm\_certs) | Export all created ACM Certificats |
-| <a name="output_route53_zones"></a> [route53\_zones](#output\_route53\_zones) | Export all created Hosted Zones |
+No outputs.
 ## Resources
 
 | Name | Type |
