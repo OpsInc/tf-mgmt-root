@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.15  |
+| v.0.0.17  |
 
 
 ## Providers
@@ -20,6 +20,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ./modules/cloudfront | n/a |
 | <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
 | <a name="module_s3_buckets"></a> [s3\_buckets](#module\_s3\_buckets) | ./modules/s3 | n/a |
 | <a name="module_s3_logging"></a> [s3\_logging](#module\_s3\_logging) | ./modules/s3 | n/a |
@@ -27,10 +28,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_apps"></a> [apps](#input\_apps) | Map of all projects with config | `any` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment to deploy to | `string` | n/a | yes |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | The project name | `string` | n/a | yes |
-| <a name="input_projects"></a> [projects](#input\_projects) | Map of all projects with config | <pre>list(object({<br>    name            = string<br>    manage_dns_zone = bool<br>    zone_name       = string<br>    dns_records = list(object({<br>      type    = string<br>      name    = string<br>      records = string<br>    }))<br>  }))</pre> | n/a | yes |
-| <a name="input_s3"></a> [s3](#input\_s3) | Map of S3 configuration | <pre>map(object({<br>    name = list(string)<br>    acl  = string<br>  }))</pre> | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | The project name | `map(string)` | n/a | yes |
+| <a name="input_s3"></a> [s3](#input\_s3) | List of S3 | `list(string)` | n/a | yes |
 ## Outputs
 
 No outputs.
@@ -38,8 +39,7 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [aws_kms_alias.create_alias_s3_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.create_kms_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_s3_bucket_policy.apply_OAC](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 
 ## Caution
 

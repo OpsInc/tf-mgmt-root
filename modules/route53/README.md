@@ -15,12 +15,17 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps with their config | `any` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | Environment to de deployed to | `string` | n/a | yes |
-| <a name="input_projects"></a> [projects](#input\_projects) | Map of all projects with config | <pre>list(object({<br>    name            = string<br>    manage_dns_zone = bool<br>    zone_name       = string<br>    dns_records = list(object({<br>      type    = string<br>      name    = string<br>      records = string<br>    }))<br>  }))</pre> | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domaine name for project | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment to de deployed to | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | The project name | `map(string)` | n/a | yes |
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_acm_certs"></a> [acm\_certs](#output\_acm\_certs) | Export all created ACM Certificats |
+| <a name="output_route53_zones"></a> [route53\_zones](#output\_route53\_zones) | Export all created Hosted Zones |
 ## Resources
 
 | Name | Type |
@@ -28,7 +33,6 @@ No outputs.
 | [aws_acm_certificate.cert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.validate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_route53_record.create_cert_validation_CNAME](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_record.create_records](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.create_zone_ns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_zone.create_zones](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_route53_zone.fetch_parent](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
