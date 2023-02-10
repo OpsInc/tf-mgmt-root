@@ -14,7 +14,7 @@ variable "environment" {
 }
 
 variable "domain_name" {
-  description = "Domaine name for project"
+  description = "Domain name for project"
   type        = string
 }
 

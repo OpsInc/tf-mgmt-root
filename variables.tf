@@ -1,13 +1,3 @@
-variable "env" {
-  description = "Environment to deploy to"
-  type        = string
-}
-
-variable "project" {
-  description = "The project name"
-  type        = map(string)
-}
-
 variable "apps" {
   description = "Map of all projects with config"
   type        = any
@@ -23,7 +13,22 @@ variable "apps" {
   # }))
 }
 
+variable "env" {
+  description = "Environment to deploy to"
+  type        = string
+}
+
+variable "project" {
+  description = "The project name"
+  type        = map(string)
+}
+
 variable "s3" {
   description = "List of S3"
+  type        = list(string)
+}
+
+variable "waf_rules" {
+  description = "List of WAF AWS Manged Rules"
   type        = list(string)
 }
