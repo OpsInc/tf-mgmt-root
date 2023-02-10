@@ -8,9 +8,9 @@ variable "common_tags" {
   type        = map(string)
 }
 
-variable "project" {
-  description = "The project name"
-  type        = map(string)
+variable "project_identifier" {
+  description = "The project name with environment"
+  type        = string
 }
 
 variable "scope" {

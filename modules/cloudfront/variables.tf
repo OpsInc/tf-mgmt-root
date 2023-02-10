@@ -19,11 +19,6 @@ variable "domain_name" {
   type        = string
 }
 
-variable "environment" {
-  description = "Project environment"
-  type        = string
-}
-
 variable "origin_bucket" {
   description = "Bucket list"
   type        = any
@@ -34,11 +29,6 @@ variable "price_class" {
   type        = string
 }
 
-variable "project" {
-  description = "Project name for ressource suffix"
-  type        = map(string)
-}
-
 variable "route53_zones" {
   description = "Created zones object"
   type        = any
@@ -47,5 +37,4 @@ variable "route53_zones" {
 variable "web_acl_id" {
   description = "ARN of WAF ACL"
   type        = string
-  default     = ""
 }

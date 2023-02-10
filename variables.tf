@@ -13,6 +13,11 @@ variable "apps" {
   # }))
 }
 
+variable "dynamoDB" {
+  description = "DynamoDB config"
+  type        = any
+}
+
 variable "env" {
   description = "Environment to deploy to"
   type        = string
@@ -20,7 +25,7 @@ variable "env" {
 
 variable "project" {
   description = "The project name"
-  type        = map(string)
+  type        = string
 }
 
 variable "s3" {
@@ -31,4 +36,9 @@ variable "s3" {
 variable "waf_rules" {
   description = "List of WAF AWS Manged Rules"
   type        = list(string)
+}
+
+variable "zone_name" {
+  description = "The project FQDN"
+  type        = string
 }

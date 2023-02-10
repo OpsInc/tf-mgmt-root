@@ -2,28 +2,15 @@ locals {
   common_tags = {
     environment          = var.env
     managed_by_terraform = true
-    project              = var.project.name
+    project              = var.project
   }
-
-  # apps = {
-  #   for app in var.apps : var.env == "production" ? "${app.name}-${var.project.name}" : "${app.name}-${var.project.name}-${var.env}" => app
-  # }
 
   apps = {
     for app in var.apps : app.name => app
   }
 
-  domain_name = var.env == "production" ? "${var.project.name}.${var.project.zone_name}" : "${var.project.name}-${var.env}.${var.project.zone_name}"
-
-  # bucket_logging_name = flatten([
-  #   for s3 in ["access-log"] :
-  #   [for key, app in local.apps : "${s3}-${key}"]
-  # ])
-
-  # buckets_list = flatten([
-  #   for s3 in var.s3 :
-  #   [for key, app in local.apps : "${s3}-${key}"]
-  # ])
+  domain_name        = var.env == "production" ? "${var.project}.${var.zone_name}" : "${var.project}-${var.env}.${var.zone_name}"
+  project_identifier = var.env == "production" ? var.project : "${var.project}-${var.env}"
 }
 
 module "dns" {
@@ -33,7 +20,7 @@ module "dns" {
   apps        = local.apps
 
   environment = var.env
-  project     = var.project
+  zone_name   = var.zone_name
 
   common_tags = local.common_tags
 }
@@ -68,10 +55,10 @@ module "s3_buckets" {
 module "waf_cloudfront" {
   source = "./modules/waf"
 
-  scope      = "CLOUDFRONT"
-  bucket_log = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
-  project    = var.project
-  waf_rules  = var.waf_rules
+  scope              = "CLOUDFRONT"
+  bucket_log         = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
+  project_identifier = local.project_identifier
+  waf_rules          = var.waf_rules
 
   common_tags = local.common_tags
 }
@@ -87,9 +74,6 @@ module "cloudfront" {
 
 
   domain_name = local.domain_name
-  environment = var.env
-  project     = var.project
-
   price_class = "PriceClass_100"
 
   common_tags = local.common_tags
@@ -98,6 +82,20 @@ module "cloudfront" {
     module.s3_buckets,
     module.s3_logging,
     module.dns,
-    # module.waf_cloudfront,
+    module.waf_cloudfront,
   ]
+}
+
+module "dynamoDB" {
+  source = "./modules/dynamodb"
+
+  providers = {
+    aws              = aws
+    aws.ca-central-1 = aws.ca-central-1
+  }
+
+  dynamoDB           = var.dynamoDB
+  project_identifier = local.project_identifier
+
+  common_tags = local.common_tags
 }

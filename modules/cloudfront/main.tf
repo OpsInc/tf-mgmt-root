@@ -1,11 +1,4 @@
 ########################################
-###              Locals              ###
-########################################
-# locals {
-#   cloudfront_name = "${var.project.name}-${var.environment}"
-# }
-
-########################################
 ###            CloudFront            ###
 ########################################
 resource "aws_cloudfront_origin_access_control" "create_OAC" {
