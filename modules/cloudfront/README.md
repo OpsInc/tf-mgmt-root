@@ -19,12 +19,10 @@ No modules.
 | <a name="input_bucket_log"></a> [bucket\_log](#input\_bucket\_log) | Bucket Access Log | `any` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name for project | `string` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | Project environment | `string` | n/a | yes |
 | <a name="input_origin_bucket"></a> [origin\_bucket](#input\_origin\_bucket) | Bucket list | `any` | n/a | yes |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | PriceClass for the Cloudfront distributions | `string` | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | Project name for ressource suffix | `map(string)` | n/a | yes |
 | <a name="input_route53_zones"></a> [route53\_zones](#input\_route53\_zones) | Created zones object | `any` | n/a | yes |
-| <a name="input_web_acl_id"></a> [web\_acl\_id](#input\_web\_acl\_id) | ARN of WAF ACL | `string` | `""` | no |
+| <a name="input_web_acl_id"></a> [web\_acl\_id](#input\_web\_acl\_id) | ARN of WAF ACL | `string` | n/a | yes |
 ## Outputs
 
 | Name | Description |

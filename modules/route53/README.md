@@ -19,7 +19,7 @@ No modules.
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name for project | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment to de deployed to | `string` | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | The project name | `map(string)` | n/a | yes |
+| <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | The project FQDN | `string` | n/a | yes |
 ## Outputs
 
 | Name | Description |
