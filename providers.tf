@@ -2,6 +2,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
+provider "aws" {
+  alias  = "ca-central-1"
+  region = "ca-central-1"
+}
+
 terraform {
   required_version = ">= 1.1.6"
   required_providers {

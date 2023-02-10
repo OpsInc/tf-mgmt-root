@@ -18,7 +18,7 @@ variable "domain_name" {
   type        = string
 }
 
-variable "project" {
-  description = "The project name"
-  type        = map(string)
+variable "zone_name" {
+  description = "The project FQDN"
+  type        = string
 }

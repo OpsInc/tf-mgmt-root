@@ -1,6 +1,9 @@
+########################################
+###               WAF                ###
+########################################
 resource "aws_wafv2_web_acl" "create_acl" {
-  name        = "${var.project.name}-cloudfront-waf"
-  description = "CloudFront WAF for ${var.project.name}"
+  name        = "${var.project_identifier}-cloudfront-waf"
+  description = "CloudFront WAF for ${var.project_identifier}"
   scope       = var.scope
 
   default_action {
@@ -34,7 +37,7 @@ resource "aws_wafv2_web_acl" "create_acl" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                = "${var.project.name}-cloudfront-waf"
+    metric_name                = "${var.project_identifier}-cloudfront-waf"
     sampled_requests_enabled   = true
   }
 

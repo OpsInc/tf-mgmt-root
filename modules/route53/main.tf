@@ -1,3 +1,6 @@
+########################################
+###              Locals              ###
+########################################
 locals {
   validation_cname = [
     for cname in aws_acm_certificate.cert.domain_validation_options : {
@@ -10,8 +13,11 @@ locals {
   ]
 }
 
+########################################
+###             Route53              ###
+########################################
 data "aws_route53_zone" "fetch_parent" {
-  name = var.project.zone_name
+  name = var.zone_name
 }
 
 resource "aws_route53_zone" "create_zones" {

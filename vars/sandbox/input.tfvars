@@ -1,9 +1,7 @@
 env = "sandbox"
 
-project = {
-  name      = "mgmt"
-  zone_name = "nodestack.cloud"
-}
+project   = "mgmt"
+zone_name = "nodestack.cloud"
 
 apps = [
   {
@@ -20,6 +18,11 @@ waf_rules = [
   "AWSManagedRulesKnownBadInputsRuleSet",
   "AWSManagedRulesAnonymousIpList",
 ]
+
+dynamoDB = {
+  hash_key        = "id"
+  replica_regions = ["ca-central-1"]
+}
 
 // On veut avoir 1 project mgmt avec plusiers apps: forms, absences, horraires
 // DNS, cloudfront, s3, cognito, apigateway: on aura juste 1 de chaque par project

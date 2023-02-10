@@ -1,3 +1,7 @@
+########################################
+###                S3                ###
+########################################
+# Bucket logging is applyed to all buckets, execpts the s3 logging bucket itself
 #tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "create_bucket" {
   for_each = toset(var.buckets)
