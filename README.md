@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.18  |
+| v.0.0.20  |
 
 
 ## Providers
@@ -24,6 +24,7 @@
 | <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
 | <a name="module_s3_buckets"></a> [s3\_buckets](#module\_s3\_buckets) | ./modules/s3 | n/a |
 | <a name="module_s3_logging"></a> [s3\_logging](#module\_s3\_logging) | ./modules/s3 | n/a |
+| <a name="module_waf_cloudfront"></a> [waf\_cloudfront](#module\_waf\_cloudfront) | ./modules/waf | n/a |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -32,6 +33,7 @@
 | <a name="input_env"></a> [env](#input\_env) | Environment to deploy to | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `map(string)` | n/a | yes |
 | <a name="input_s3"></a> [s3](#input\_s3) | List of S3 | `list(string)` | n/a | yes |
+| <a name="input_waf_rules"></a> [waf\_rules](#input\_waf\_rules) | List of WAF AWS Manged Rules | `list(string)` | n/a | yes |
 ## Outputs
 
 No outputs.

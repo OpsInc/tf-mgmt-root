@@ -18,7 +18,7 @@ No modules.
 | <a name="input_acm_certs"></a> [acm\_certs](#input\_acm\_certs) | ACM Certificat info | `any` | n/a | yes |
 | <a name="input_bucket_log"></a> [bucket\_log](#input\_bucket\_log) | Bucket Access Log | `any` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
-| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domaine name for project | `string` | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name for project | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Project environment | `string` | n/a | yes |
 | <a name="input_origin_bucket"></a> [origin\_bucket](#input\_origin\_bucket) | Bucket list | `any` | n/a | yes |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | PriceClass for the Cloudfront distributions | `string` | n/a | yes |
