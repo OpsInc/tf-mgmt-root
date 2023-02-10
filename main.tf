@@ -65,6 +65,17 @@ module "s3_buckets" {
   common_tags = local.common_tags
 }
 
+module "waf_cloudfront" {
+  source = "./modules/waf"
+
+  scope      = "CLOUDFRONT"
+  bucket_log = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
+  project    = var.project
+  waf_rules  = var.waf_rules
+
+  common_tags = local.common_tags
+}
+
 module "cloudfront" {
   source = "./modules/cloudfront"
 
@@ -72,7 +83,7 @@ module "cloudfront" {
   bucket_log    = module.s3_logging.created_buckets["access-log-${local.domain_name}"]
   acm_certs     = module.dns.acm_certs
   route53_zones = module.dns.route53_zones
-  # web_acl_id = module.waf_cloudfront.web_acl_arn
+  web_acl_id    = module.waf_cloudfront.web_acl_arn
 
 
   domain_name = local.domain_name

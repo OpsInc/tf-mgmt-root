@@ -7,15 +7,16 @@ project = {
 
 apps = [
   {
-    name = "forms"
-    dns_records = [
-      {
-        name    = "test1"
-        records = "test1.recrod.com"
-        type    = "CNAME"
-      }
-    ]
+    name        = "forms"
+    dns_records = []
   }
 ]
 
 s3 = ["frontend", "backup"]
+
+waf_rules = [
+  "AWSManagedRulesAmazonIpReputationList",
+  "AWSManagedRulesCommonRuleSet",
+  "AWSManagedRulesKnownBadInputsRuleSet",
+  "AWSManagedRulesAnonymousIpList",
+]

@@ -72,8 +72,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version       = "TLSv1.2_2021"
   }
 
-  # Waf will be added shorlty
-  #tfsec:ignore:aws-cloudfront-enable-waf
   web_acl_id = var.web_acl_id
 }
 

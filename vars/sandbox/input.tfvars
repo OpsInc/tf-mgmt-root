@@ -7,18 +7,19 @@ project = {
 
 apps = [
   {
-    name = "forms"
-    dns_records = [
-      {
-        name    = "test1"
-        records = "test1.recrod.com"
-        type    = "CNAME"
-      }
-    ]
+    name        = "forms"
+    dns_records = []
   }
 ]
 
 s3 = ["frontend", "backup"]
+
+waf_rules = [
+  "AWSManagedRulesAmazonIpReputationList",
+  "AWSManagedRulesCommonRuleSet",
+  "AWSManagedRulesKnownBadInputsRuleSet",
+  "AWSManagedRulesAnonymousIpList",
+]
 
 // On veut avoir 1 project mgmt avec plusiers apps: forms, absences, horraires
 // DNS, cloudfront, s3, cognito, apigateway: on aura juste 1 de chaque par project

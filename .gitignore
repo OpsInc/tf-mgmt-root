@@ -4,3 +4,7 @@
 # Dependency Lock File
 **/.terraform.lock.hcl
 
+# Terraform plan output
+**/tf.plan
+**/tf.json
+
