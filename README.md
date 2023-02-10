@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.21  |
+| v.0.0.22  |
 
 
 ## Providers
