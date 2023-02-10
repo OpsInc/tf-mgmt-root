@@ -1,9 +1,7 @@
 env = "dev"
 
-project = {
-  name      = "mgmt"
-  zone_name = "nodestack.cloud"
-}
+project   = "mgmt"
+zone_name = "nodestack.cloud"
 
 apps = [
   {
@@ -20,3 +18,7 @@ waf_rules = [
   "AWSManagedRulesKnownBadInputsRuleSet",
   "AWSManagedRulesAnonymousIpList",
 ]
+
+dynamoDB = {
+  hash_key = "id"
+}

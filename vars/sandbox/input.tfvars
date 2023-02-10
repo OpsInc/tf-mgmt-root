@@ -21,7 +21,6 @@ waf_rules = [
 
 dynamoDB = {
   hash_key        = "id"
-  replica_regions = ["ca-central-1"]
 }
 
 // On veut avoir 1 project mgmt avec plusiers apps: forms, absences, horraires
