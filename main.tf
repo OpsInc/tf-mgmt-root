@@ -99,3 +99,14 @@ module "dynamoDB" {
 
   common_tags = local.common_tags
 }
+
+module "lambda" {
+  source = "./modules/lambda"
+
+  dynamodb_kms_key_arn = module.dynamoDB.kms_key_arn
+
+  apps               = local.apps
+  project_identifier = local.project_identifier
+
+  common_tags = local.common_tags
+}

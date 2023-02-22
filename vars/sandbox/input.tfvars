@@ -10,7 +10,7 @@ apps = [
   }
 ]
 
-s3 = ["frontend", "backup"]
+s3 = ["frontend", "backup", "lambda-source-code"]
 
 waf_rules = [
   "AWSManagedRulesAmazonIpReputationList",
@@ -20,7 +20,7 @@ waf_rules = [
 ]
 
 dynamoDB = {
-  hash_key        = "id"
+  hash_key = "id"
 }
 
 // On veut avoir 1 project mgmt avec plusiers apps: forms, absences, horraires
