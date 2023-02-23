@@ -10,7 +10,7 @@ apps = [
   }
 ]
 
-s3 = ["frontend", "backup"]
+s3 = ["frontend", "backup", "lambda-source-code"]
 
 waf_rules = [
   "AWSManagedRulesAmazonIpReputationList",
