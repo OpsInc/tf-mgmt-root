@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.22  |
+| v.0.0.23  |
 
 
 ## Providers
@@ -23,6 +23,7 @@
 | <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ./modules/cloudfront | n/a |
 | <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
 | <a name="module_dynamoDB"></a> [dynamoDB](#module\_dynamoDB) | ./modules/dynamodb | n/a |
+| <a name="module_lambda"></a> [lambda](#module\_lambda) | ./modules/lambda | n/a |
 | <a name="module_s3_buckets"></a> [s3\_buckets](#module\_s3\_buckets) | ./modules/s3 | n/a |
 | <a name="module_s3_logging"></a> [s3\_logging](#module\_s3\_logging) | ./modules/s3 | n/a |
 | <a name="module_waf_cloudfront"></a> [waf\_cloudfront](#module\_waf\_cloudfront) | ./modules/waf | n/a |
