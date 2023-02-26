@@ -110,3 +110,12 @@ module "lambda" {
 
   common_tags = local.common_tags
 }
+
+module "cognito" {
+  source = "./modules/cognito"
+
+  domain_name        = local.domain_name
+  project_identifier = local.project_identifier
+
+  common_tags = local.common_tags
+}

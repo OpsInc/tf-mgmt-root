@@ -26,7 +26,7 @@ resource "aws_lambda_function" "test_lambda" {
 ###               IAM                ###
 ########################################
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "lambda-${var.project_identifier}"
 
   assume_role_policy = <<EOF
 {
@@ -66,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "AmazonS3ReadOnlyAccess" {
 # Allows Lambda to Encrypt/Decrypt DynamoDB KMS
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "lambda_kms" {
-  name        = "lambda_kms"
+  name        = "lambda-kms-${var.project_identifier}"
   description = "IAM policy for logging from a lambda"
 
   policy = jsonencode(
