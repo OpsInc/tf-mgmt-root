@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.23  |
+| v.0.0.24  |
 
 
 ## Providers
@@ -21,6 +21,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ./modules/cloudfront | n/a |
+| <a name="module_cognito"></a> [cognito](#module\_cognito) | ./modules/cognito | n/a |
 | <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
 | <a name="module_dynamoDB"></a> [dynamoDB](#module\_dynamoDB) | ./modules/dynamodb | n/a |
 | <a name="module_lambda"></a> [lambda](#module\_lambda) | ./modules/lambda | n/a |
