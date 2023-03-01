@@ -2,7 +2,7 @@
 ###              Lambda              ###
 ########################################
 #tfsec:ignore:aws-lambda-enable-tracing
-resource "aws_lambda_function" "test_lambda" {
+resource "aws_lambda_function" "lambda" {
   for_each      = var.apps
   function_name = "${each.value.name}-${var.project_identifier}"
   role          = aws_iam_role.iam_for_lambda.arn
@@ -11,6 +11,12 @@ resource "aws_lambda_function" "test_lambda" {
   filename    = "${path.module}/src/dummy.zip"
   runtime     = "go1.x"
   memory_size = 128
+
+  environment {
+    variables = {
+      DATABASE_NAME = var.project_identifier
+    }
+  }
 
   lifecycle {
     # environment variables are managed by the CI/CD
