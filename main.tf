@@ -89,13 +89,11 @@ module "cloudfront" {
 module "dynamoDB" {
   source = "./modules/dynamodb"
 
-  providers = {
-    aws              = aws
-    aws.ca-central-1 = aws.ca-central-1
-  }
-
   dynamoDB           = var.dynamoDB
   project_identifier = local.project_identifier
+
+  kms_global_arn              = aws_kms_key.kms_global.arn
+  kms_global_ca-central-1_arn = aws_kms_replica_key.kms_replica-ca-central-1.arn
 
   common_tags = local.common_tags
 }
@@ -103,7 +101,7 @@ module "dynamoDB" {
 module "lambda" {
   source = "./modules/lambda"
 
-  dynamodb_kms_key_arn = module.dynamoDB.kms_key_arn
+  dynamodb_kms_key_arn = aws_kms_key.kms_global.arn
 
   apps               = local.apps
   project_identifier = local.project_identifier
@@ -116,6 +114,20 @@ module "cognito" {
 
   domain_name        = local.domain_name
   project_identifier = local.project_identifier
+
+  common_tags = local.common_tags
+}
+
+module "api_gw" {
+  source = "./modules/api-gw"
+
+  apps               = local.apps
+  project_identifier = local.project_identifier
+
+  cognito_arn = module.cognito.cognito_arn
+  lambdas     = module.lambda.created_lambdas
+
+  kms_global_arn = aws_kms_key.kms_global.arn
 
   common_tags = local.common_tags
 }

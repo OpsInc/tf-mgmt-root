@@ -1,6 +1,11 @@
-variable "dynamoDB" {
-  description = "DynamoDB config"
+variable "apps" {
+  description = "Map of all apps with their config"
   type        = any
+}
+
+variable "cognito_arn" {
+  description = "Congnito endpoint id"
+  type        = string
 }
 
 variable "common_tags" {
@@ -13,9 +18,9 @@ variable "kms_global_arn" {
   type        = string
 }
 
-variable "kms_global_ca-central-1_arn" {
-  description = "Global replica KMS key in ca-central-1"
-  type        = string
+variable "lambdas" {
+  description = "Created Lambdas"
+  type        = any
 }
 
 variable "project_identifier" {
