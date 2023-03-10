@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.0.0.24  |
+| v.1.0.0  |
 
 
 ## Providers
@@ -10,6 +10,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.20 |
+| <a name="provider_aws.ca-central-1"></a> [aws.ca-central-1](#provider\_aws.ca-central-1) | >= 4.20 |
 ## Requirements
 
 | Name | Version |
@@ -20,6 +21,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_api_gw"></a> [api\_gw](#module\_api\_gw) | ./modules/api-gw | n/a |
 | <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ./modules/cloudfront | n/a |
 | <a name="module_cognito"></a> [cognito](#module\_cognito) | ./modules/cognito | n/a |
 | <a name="module_dns"></a> [dns](#module\_dns) | ./modules/route53 | n/a |
@@ -46,7 +48,11 @@ No outputs.
 
 | Name | Type |
 |------|------|
+| [aws_kms_alias.kms_global_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
+| [aws_kms_key.kms_global](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_kms_replica_key.kms_replica-ca-central-1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_replica_key) | resource |
 | [aws_s3_bucket_policy.apply_OAC](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 
 ## Caution
 

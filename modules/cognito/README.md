@@ -20,7 +20,9 @@ No modules.
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_cognito_arn"></a> [cognito\_arn](#output\_cognito\_arn) | Cognito endpoint id |
 ## Resources
 
 | Name | Type |

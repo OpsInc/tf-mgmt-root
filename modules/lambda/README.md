@@ -21,7 +21,9 @@ No modules.
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_created_lambdas"></a> [created\_lambdas](#output\_created\_lambdas) | Output created Lambdas |
 ## Resources
 
 | Name | Type |
@@ -32,7 +34,7 @@ No outputs.
 | [aws_iam_role_policy_attachment.AmazonDynamoDBFullAccess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.AmazonS3ReadOnlyAccess](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.lambda_kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_lambda_function.test_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_function.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 
 ## Caution
 
