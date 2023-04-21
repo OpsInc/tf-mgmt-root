@@ -20,5 +20,5 @@ waf_rules = [
 ]
 
 dynamoDB = {
-  hash_key = "id"
+  hash_key = "ID"
 }
