@@ -1,4 +1,4 @@
-env = "sandbox"
+env = "sbx"
 
 project   = "mgmt"
 zone_name = "nodestack.cloud"

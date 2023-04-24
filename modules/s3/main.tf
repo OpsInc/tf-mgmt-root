@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "create_bucket" {
   for_each = toset(var.buckets)
 
   bucket        = each.key
-  force_destroy = var.environment == "sandbox" ? true : false
+  force_destroy = var.environment == "sbx" ? true : false
 
   tags = var.common_tags
 }
