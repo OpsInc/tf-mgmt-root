@@ -1,9 +1,16 @@
 ########################################
+###              Locals              ###
+########################################
+locals {
+  lambdas = merge(var.apps, var.lambdas)
+}
+
+########################################
 ###              Lambda              ###
 ########################################
 #tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "lambda" {
-  for_each      = var.apps
+  for_each      = local.lambdas
   function_name = "${each.value.name}-${var.project_identifier}"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "main"
@@ -69,11 +76,10 @@ resource "aws_iam_role_policy_attachment" "AmazonS3ReadOnlyAccess" {
   role       = aws_iam_role.iam_for_lambda.name
 }
 
-# Allows Lambda to Encrypt/Decrypt DynamoDB KMS
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "lambda_kms" {
   name        = "lambda-kms-${var.project_identifier}"
-  description = "IAM policy for logging from a lambda"
+  description = "IAM policy to allow Lambda to Encrypt/Decrypt KMS"
 
   policy = jsonencode(
     {

@@ -10,6 +10,12 @@ apps = [
   }
 ]
 
+lambdas = [
+  {
+    name = "cognito-postauth"
+  }
+]
+
 s3 = ["frontend", "backup", "lambda-source-code"]
 
 waf_rules = [

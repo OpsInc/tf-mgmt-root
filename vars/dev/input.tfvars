@@ -5,8 +5,14 @@ zone_name = "nodestack.cloud"
 
 apps = [
   {
-    name        = "forms"
-    dns_records = []
+    name         = "forms"
+    dns_records  = []
+  }
+]
+
+lambdas = [
+  {
+    name = "cognito-postauth"
   }
 ]
 

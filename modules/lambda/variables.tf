@@ -13,6 +13,11 @@ variable "dynamodb_kms_key_arn" {
   type        = string
 }
 
+variable "lambdas" {
+  description = "Map of all lambda projects with config"
+  type        = any
+}
+
 variable "project_identifier" {
   description = "The project name with environment"
   type        = string

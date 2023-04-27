@@ -9,6 +9,10 @@ locals {
     for app in var.apps : app.name => app
   }
 
+  lambdas = {
+    for lambda in var.lambdas : lambda.name => lambda
+  }
+
   domain_name        = var.env == "production" ? "${var.project}.${var.zone_name}" : "${var.project}-${var.env}.${var.zone_name}"
   project_identifier = var.env == "production" ? var.project : "${var.project}-${var.env}"
 }
@@ -103,7 +107,9 @@ module "lambda" {
 
   dynamodb_kms_key_arn = aws_kms_key.kms_global.arn
 
-  apps               = local.apps
+  apps    = local.apps
+  lambdas = local.lambdas
+
   project_identifier = local.project_identifier
 
   common_tags = local.common_tags
@@ -115,7 +121,18 @@ module "cognito" {
   domain_name        = local.domain_name
   project_identifier = local.project_identifier
 
+  lambda_post_confirmation_arn = module.lambda.created_lambdas["cognito-postauth"].arn
+
   common_tags = local.common_tags
+}
+
+resource "aws_lambda_permission" "allow_cognito" {
+  statement_id  = "AllowTriggers"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda.created_lambdas["cognito-postauth"].function_name
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = module.cognito.cognito_arn
+  # qualifier     = aws_lambda_alias.test_alias.name
 }
 
 module "api_gw" {
