@@ -1,16 +1,11 @@
 variable "apps" {
-  description = "Map of all projects with config"
+  description = "Map of all apps within the project with their config"
   type        = any
-  # type = list(object({
-  #   name            = string
-  #   manage_dns_zone = bool
-  #   zone_name       = string
-  #   dns_records = list(object({
-  #     type    = string
-  #     name    = string
-  #     records = string
-  #   }))
-  # }))
+}
+
+variable "lambdas" {
+  description = "Map of all lambda within the projects with their config"
+  type        = any
 }
 
 variable "dynamoDB" {
