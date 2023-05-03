@@ -2,7 +2,7 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.1.1.0  |
+| v.1.2.0  |
 
 
 ## Providers
@@ -34,9 +34,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apps"></a> [apps](#input\_apps) | Map of all projects with config | `any` | n/a | yes |
+| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps within the project with their config | `any` | n/a | yes |
 | <a name="input_dynamoDB"></a> [dynamoDB](#input\_dynamoDB) | DynamoDB config | `any` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment to deploy to | `string` | n/a | yes |
+| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Map of all lambda within the projects with their config | `any` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `string` | n/a | yes |
 | <a name="input_s3"></a> [s3](#input\_s3) | List of S3 | `list(string)` | n/a | yes |
 | <a name="input_waf_rules"></a> [waf\_rules](#input\_waf\_rules) | List of WAF AWS Manged Rules | `list(string)` | n/a | yes |
@@ -51,6 +52,7 @@ No outputs.
 | [aws_kms_alias.kms_global_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.kms_global](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_kms_replica_key.kms_replica-ca-central-1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_replica_key) | resource |
+| [aws_lambda_permission.allow_cognito](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_s3_bucket_policy.apply_OAC](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 

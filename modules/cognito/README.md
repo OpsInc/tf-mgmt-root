@@ -17,6 +17,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name for project | `string` | n/a | yes |
+| <a name="input_lambda_post_confirmation_arn"></a> [lambda\_post\_confirmation\_arn](#input\_lambda\_post\_confirmation\_arn) | ARN of the lambda that will be triggered after a User registers | `string` | n/a | yes |
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |
 ## Outputs
 

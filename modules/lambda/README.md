@@ -18,6 +18,7 @@ No modules.
 | <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps with their config | `any` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
 | <a name="input_dynamodb_kms_key_arn"></a> [dynamodb\_kms\_key\_arn](#input\_dynamodb\_kms\_key\_arn) | DynamoDB KMS key arn | `string` | n/a | yes |
+| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Map of all lambda projects with config | `any` | n/a | yes |
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |
 ## Outputs
 
