@@ -62,6 +62,7 @@ jobs:
   terraform-docs:
     if: success()
     needs: git-release
+    runs-on: ubuntu-latest
     steps:
       - name: Render terraform docs inside the README.md and push changes back to PR branch
         uses: lab-se/terraform-docs-action@v1.3
