@@ -7,7 +7,6 @@ on:
     branches:
       - 'feature/**'
 
-if: github.event_name == 'push'
 
 env:
   AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
@@ -16,6 +15,7 @@ env:
 
 jobs:
   lint-PUSH:
+    if: github.event_name == 'push'
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: sbx
