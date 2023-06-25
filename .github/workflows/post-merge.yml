@@ -5,12 +5,12 @@ name: Post merge CI
 
 on:
   pull_request:
-    types:
-      - closed
+    # types:
+    #   - closed
 
 jobs:
   git-release:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Post merge action
     steps:
@@ -59,7 +59,7 @@ jobs:
           release_name: "${{ steps.create_tag.outputs.tag_version }}: ${{ steps.git_info.outputs.git_subject }}"
           body: ${{ steps.git_info.outputs.git_body }}
 
-  terraform-doc:
+  terraform-docs:
     if: success()
     needs: git-release
     steps:
@@ -107,7 +107,7 @@ jobs:
 
   terraform-deploy-dev:
     if: success()
-    needs: git-release
+    needs: [git-release, terraform-docs]
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: dev
