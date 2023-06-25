@@ -41,7 +41,8 @@ jobs:
         id: git_info
         run: |
           GIT_SUBJECT=$(git log -1 --pretty=format:"%s")
-          GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S")
+          # GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S")
+          GIT_BODY="test"
           echo "git_subject=$GIT_SUBJECT" >> $GITHUB_OUTPUT
           # This hack is required to add a multiline output to GITHUB_OUTPUT
           echo "git_body<<EOF" >> $GITHUB_OUTPUT
