@@ -5,12 +5,12 @@ name: Post merge CI
 
 on:
   pull_request:
-    # types:
-    #   - closed
+    types:
+      - closed
 
 jobs:
   git-release:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Post merge action
     steps:
