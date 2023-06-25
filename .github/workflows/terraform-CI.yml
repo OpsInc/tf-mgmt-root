@@ -3,9 +3,9 @@
 
 name: Terraform Lint
 on:
-  push:
-    branches:
-      - 'feature/**'
+  # push:
+  #   branches:
+  #     - 'feature/**'
   pull_request:
     branches: main
 
@@ -41,9 +41,10 @@ jobs:
     if: success() && github.event_name == 'pull_request'
     needs: lint
     env:
+      GREEN: '\033[0;32m'
+      RED: '\033[0;31m'
       H_GREEN: '\033[97;42m'
       H_RED: '\033[97;41m'
-      RED: '\033[0;31m'
       NC: '\033[0m'  # No Color
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +61,7 @@ jobs:
           if [[ -z $CURRENT_TAG_FILTERED ]] || [[ "$VERSION_TAG_FILTERED" -gt "$CURRENT_TAG_FILTERED" ]]
           then
             echo -e "Gating: ${H_GREEN}PASSED${NC}"
+            echo -e "${GREEN}VERSION tag $VERSION_TAG is higher than to Current Tag $CURRENT_TAG${NC}"
           else
             echo -e "Gating: ${H_RED}FAILED${NC}"
             echo -e "${RED}VERSION tag $VERSION_TAG is lower or equal to Current Tag $CURRENT_TAG${NC}"
