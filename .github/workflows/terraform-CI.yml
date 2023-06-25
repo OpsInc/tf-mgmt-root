@@ -1,7 +1,7 @@
 ---
 # yamllint disable rule:line-length
 
-name: Terraform Lint
+name: Terraform Lint PUSH
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  lint:
+  lint-PUSH:
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: sbx
