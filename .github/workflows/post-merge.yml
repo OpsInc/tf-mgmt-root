@@ -66,46 +66,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Render terraform docs inside the README.md and push changes back to PR branch
-        uses: lab-se/terraform-docs-action@v1.3
+        uses: terraform-docs/gh-actions@v1.0.0
         with:
+          conifg-file: .terraform-docs.yml
+          recursive: true
           working-dir: .
-          config-file: .terraform-docs.yml
-
-      - name: README - Parse and modify version [latest tag]
-        id: latest_tag
-        run: |
-          latest_tag=$(cat VERSION)
-          sed -i "s/\$VERSION/$latest_tag/g" README.md
-          echo "release_tag=$latest_tag" >> $GITHUB_OUTPUT
-
-      - name: README - Parse and modify source module path
-        run: |
-          sed -i "s#<RELEASE_VERSION>#${{ steps.latest_tag.outputs.release_tag }}#g" README.md
-
-      # - name: Setup Git config
-      #   run: |
-      #     git config --local --add safe.directory $GITHUB_WORKSPACE
-      #     sudo chown -R runner:docker .git/
-
-      - name: Check diff (fix bug if nothing to commit)
-        id: check_diff
-        run: |
-          git add README.md --verbose
-          if [ $(git status | grep "nothing to commit" >/dev/null ; echo $?) -eq 1 ];
-          then
-            echo "diff=true" >> $GITHUB_OUTPUT
-          else
-            echo "nothing to commit"
-            echo "diff=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Push to repository
-        if: ${{ steps.check_diff.outputs.diff == 'true' }}
-        run: |
-          git config user.name "gihub_workflow"
-          git config user.email "github_workflow@users.noreply.github.com"
-          git commit -m "Automatic readme update"
-          git push
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
 
   terraform-deploy-dev:
     if: success()
