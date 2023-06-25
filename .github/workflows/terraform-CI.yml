@@ -7,15 +7,14 @@ on:
     branches:
       - 'feature/**'
 
-
 env:
   AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  lint-PUSH:
-    if: github.event_name != 'pull_request'
+  lint:
+    if: startsWith(github.ref, 'refs/heads/feature/') || github.event_name == 'pull_request'
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: sbx
@@ -35,3 +34,62 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m
+
+  git_version_gating:
+    if: success() && github.event_name == 'pull_request'
+    needs: lint
+    env:
+      GREEN: '\033[0;32m'
+      RED: '\033[0;31m'
+      H_GREEN: '\033[97;42m'
+      H_RED: '\033[97;41m'
+      NC: '\033[0m'  # No Color
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Git version gating
+        run: |
+          git fetch --all --tags
+
+          VERSION_TAG=$(cat VERSION)
+          CURRENT_TAG=$(git tag --list | tail -n1)
+          VERSION_TAG_FILTERED=$(echo $VERSION_TAG| tr -d 'v.')
+          CURRENT_TAG_FILTERED=$(echo $CURRENT_TAG | tr -d 'v.')
+
+          if [[ -z $CURRENT_TAG_FILTERED ]] || [[ "$VERSION_TAG_FILTERED" -gt "$CURRENT_TAG_FILTERED" ]]
+          then
+            echo -e "Gating: ${H_GREEN}PASSED${NC}"
+            echo -e "${GREEN}VERSION tag $VERSION_TAG is higher than to Current Tag $CURRENT_TAG${NC}"
+          else
+            echo -e "Gating: ${H_RED}FAILED${NC}"
+            echo -e "${RED}VERSION tag $VERSION_TAG is lower or equal to Current Tag $CURRENT_TAG${NC}"
+            exit 1
+          fi
+
+  apply:
+    if: success() && github.event_name == 'pull_request'
+    needs: [lint, git_version_gating]
+    env:
+      TFVARS_PATH: vars
+      ENVIRONMENT: sbx
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform init
+        run: terraform init -backend-config=${TFVARS_PATH}/${ENVIRONMENT}/backend.tfvars -upgrade=true
+
+      - name: Terraform apply
+        run: |
+          terraform apply -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -auto-approve
+        continue-on-error: true
+
+      - name: Terraform Destroy
+        run: |
+          terraform destroy -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -auto-approve
