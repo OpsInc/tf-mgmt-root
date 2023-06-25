@@ -37,9 +37,35 @@ jobs:
       - name: Terraform plan
         run: terraform plan -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m
 
-  apply:
+  git_version_gating:
     if: success() && github.event_name == 'pull_request'
     needs: lint
+    env:
+      H_GREEN: '\033[97;42m'
+      H_RED: '\033[97;41m'
+      RED: '\033[0;31m'
+      NC: '\033[0m'  # No Color
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git version gating
+        run: |
+          VERSION_TAG=$(cat VERSION)
+          CURRENT_TAG=$(git tag --list | tail -n1)
+          VERSION_TAG_FILTERED=$(echo $VERSION_TAG| tr -d 'v.')
+          CURRENT_TAG_FILTERED=$(echo $CURRENT_TAG | tr -d 'v.')
+
+          if [[ -z $CURRENT_TAG_FILTERED ]] || [[ "$VERSION_TAG_FILTERED" -gt "$CURRENT_TAG_FILTERED" ]]
+          then
+            echo -e "Gating: ${H_GREEN}PASSED${NC}"
+          else
+            echo -e "Gating: ${H_RED}FAILED${NC}"
+            echo -e "${RED}VERSION tag $VERSION_TAG is lower or equal to Current Tag $CURRENT_TAG${NC}"
+            exit 1
+          fi
+
+  apply:
+    if: success() && github.event_name == 'pull_request'
+    needs: [lint, git_version_gating]
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: sbx
@@ -61,4 +87,4 @@ jobs:
 
       - name: Terraform Destroy
         run: |
-          terraform apply -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -auto-approve
+          terraform destroy -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -auto-approve
