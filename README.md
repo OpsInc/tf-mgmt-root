@@ -2,15 +2,15 @@
 ## Module Release Latest Version
 | Version |
 |:-------:|
-| v.1.2.0  |
+| v1.0.0  |
 
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.20 |
-| <a name="provider_aws.ca-central-1"></a> [aws.ca-central-1](#provider\_aws.ca-central-1) | >= 4.20 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.5.0 |
+| <a name="provider_aws.ca-central-1"></a> [aws.ca-central-1](#provider\_aws.ca-central-1) | 5.5.0 |
 ## Requirements
 
 | Name | Version |
@@ -34,10 +34,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps within the project with their config | `any` | n/a | yes |
-| <a name="input_dynamoDB"></a> [dynamoDB](#input\_dynamoDB) | DynamoDB config | `any` | n/a | yes |
+| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps within the project with their config | <pre>list(object({<br>    name = string<br>  }))</pre> | n/a | yes |
+| <a name="input_dynamoDB"></a> [dynamoDB](#input\_dynamoDB) | DynamoDB config | <pre>object({<br>    hash_key = string<br>  })</pre> | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment to deploy to | `string` | n/a | yes |
-| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Map of all lambda within the projects with their config | `any` | n/a | yes |
+| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Map of all lambda within the projects with their config | <pre>list(object({<br>    name = string<br>  }))</pre> | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `string` | n/a | yes |
 | <a name="input_s3"></a> [s3](#input\_s3) | List of S3 | `list(string)` | n/a | yes |
 | <a name="input_waf_rules"></a> [waf\_rules](#input\_waf\_rules) | List of WAF AWS Manged Rules | `list(string)` | n/a | yes |

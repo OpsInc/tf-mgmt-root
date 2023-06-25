@@ -8,7 +8,6 @@ variable "bucket_log" {
   type        = any
 }
 
-
 variable "common_tags" {
   description = "Tags per brands"
   type        = map(string)
