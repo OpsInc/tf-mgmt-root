@@ -15,7 +15,7 @@ env:
 
 jobs:
   lint-PUSH:
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     env:
       TFVARS_PATH: vars
       ENVIRONMENT: sbx
