@@ -1,6 +1,6 @@
 variable "apps" {
   description = "Map of all apps with their config"
-  type        = any
+  type        = map(any)
 }
 
 variable "common_tags" {

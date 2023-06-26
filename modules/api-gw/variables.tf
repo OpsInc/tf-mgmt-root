@@ -1,6 +1,6 @@
 variable "apps" {
   description = "Map of all apps with their config"
-  type        = any
+  type        = map(any)
 }
 
 variable "cognito_arn" {
@@ -20,7 +20,7 @@ variable "kms_global_arn" {
 
 variable "lambdas" {
   description = "Created Lambdas"
-  type        = any
+  type        = map(any)
 }
 
 variable "project_identifier" {

@@ -1,10 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 ## Requirements
 
 No requirements.
@@ -15,11 +10,11 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps with their config | `any` | n/a | yes |
+| <a name="input_apps"></a> [apps](#input\_apps) | Map of all apps with their config | `map(any)` | n/a | yes |
 | <a name="input_cognito_arn"></a> [cognito\_arn](#input\_cognito\_arn) | Congnito endpoint id | `string` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
 | <a name="input_kms_global_arn"></a> [kms\_global\_arn](#input\_kms\_global\_arn) | Global KMS key | `string` | n/a | yes |
-| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Created Lambdas | `any` | n/a | yes |
+| <a name="input_lambdas"></a> [lambdas](#input\_lambdas) | Created Lambdas | `map(any)` | n/a | yes |
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |
 ## Outputs
 

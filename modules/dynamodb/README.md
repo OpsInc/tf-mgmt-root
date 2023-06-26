@@ -1,10 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 ## Requirements
 
 No requirements.
@@ -16,7 +11,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Tags per brands | `map(string)` | n/a | yes |
-| <a name="input_dynamoDB"></a> [dynamoDB](#input\_dynamoDB) | DynamoDB config | `any` | n/a | yes |
+| <a name="input_dynamoDB"></a> [dynamoDB](#input\_dynamoDB) | DynamoDB config | <pre>object({<br>    hash_key = string<br>  })</pre> | n/a | yes |
 | <a name="input_kms_global_arn"></a> [kms\_global\_arn](#input\_kms\_global\_arn) | Global KMS key | `string` | n/a | yes |
 | <a name="input_kms_global_ca-central-1_arn"></a> [kms\_global\_ca-central-1\_arn](#input\_kms\_global\_ca-central-1\_arn) | Global replica KMS key in ca-central-1 | `string` | n/a | yes |
 | <a name="input_project_identifier"></a> [project\_identifier](#input\_project\_identifier) | The project name with environment | `string` | n/a | yes |

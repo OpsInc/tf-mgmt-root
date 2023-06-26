@@ -5,8 +5,7 @@ zone_name = "nodestack.cloud"
 
 apps = [
   {
-    name        = "forms"
-    dns_records = []
+    name = "forms"
   }
 ]
 
@@ -26,10 +25,5 @@ waf_rules = [
 ]
 
 dynamoDB = {
-  hash_key = "id"
+  hash_key = "ID"
 }
-
-// On veut avoir 1 project mgmt avec plusiers apps: forms, absences, horraires
-// DNS, cloudfront, s3, cognito, apigateway: on aura juste 1 de chaque par project
-// sous cloudfront et apigateway on aura un /app* ---> /forms, /absences, /horraire
-// donc il faut quand meme un map de apps mais juste pour les /

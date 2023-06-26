@@ -1,16 +1,25 @@
 variable "apps" {
   description = "Map of all apps within the project with their config"
-  type        = any
+
+  type = list(object({
+    name = string
+  }))
 }
 
 variable "lambdas" {
   description = "Map of all lambda within the projects with their config"
-  type        = any
+
+  type = list(object({
+    name = string
+  }))
 }
 
 variable "dynamoDB" {
   description = "DynamoDB config"
-  type        = any
+
+  type = object({
+    hash_key = string
+  })
 }
 
 variable "env" {

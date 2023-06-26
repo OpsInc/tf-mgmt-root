@@ -1,6 +1,3 @@
-########################################
-###               KMS                ###
-########################################
 data "aws_caller_identity" "current" {}
 
 resource "aws_kms_key" "kms_global" {

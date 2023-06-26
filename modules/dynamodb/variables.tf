@@ -1,6 +1,9 @@
 variable "dynamoDB" {
   description = "DynamoDB config"
-  type        = any
+
+  type = object({
+    hash_key = string
+  })
 }
 
 variable "common_tags" {

@@ -7,7 +7,7 @@ content: |-
   ## Module Release Latest Version
   | Version |
   |:-------:|
-  | $VERSION  |
+  | {{ include "VERSION"}} |
 
 
   {{ .Providers }}

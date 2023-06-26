@@ -5,7 +5,6 @@ formatter: "markdown"
 version: ""
 content: |-
 
-  {{ .Providers }}
   {{ .Requirements }}
   {{ .Modules  }}
   {{ .Inputs }}
