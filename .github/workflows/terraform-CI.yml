@@ -37,7 +37,7 @@ jobs:
         run: terraform fmt -recursive
 
       - name: Terraform plan
-        run: terraform plan -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m
+        run: terraform plan -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -lock=false
 
   tfsec:
     if: github.event_name == 'pull_request'

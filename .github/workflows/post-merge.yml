@@ -17,7 +17,7 @@ jobs:
   git-tag-release:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    name: Post merge action
+    name: Post-merge Git actions
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,6 +25,25 @@ jobs:
       - name: Setup Git config
         run: |
           git config --local --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Fetch git commit info
+        id: git_info
+        run: |
+          GIT_SUBJECT=$(git log -1 --pretty=format:"%s")
+          echo "git_subject=$GIT_SUBJECT" >>GITHUB_OUTPUT
+
+          echo $GIT_SUBJECT
+
+          GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S") || GIT_BODY=""
+
+          if [ -z $GIT_BODY ]; then
+          	echo "git_body=$GIT_BODY" >>GITHUB_OUTPUT
+          else
+            # This hack is required to add a multiline output to GITHUB_OUTPUT
+          	echo "git_body<<EOF" >>GITHUB_OUTPUT
+          	echo $GIT_BODY >>GITHUB_OUTPUT
+          	echo "EOF" >>GITHUB_OUTPUT
+          fi
 
       - name: Create latest tag
         id: create_tag
@@ -40,18 +59,6 @@ jobs:
             echo "tag_version=$VERSION" >> $GITHUB_OUTPUT
             echo "release=true" >> $GITHUB_OUTPUT
           fi
-
-      - name: Fetch git commit info
-        if: ${{ steps.create_tag.outputs.release == 'true' }}
-        id: git_info
-        run: |
-          GIT_SUBJECT=$(git log -1 --pretty=format:"%s")
-          GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S")
-          echo "git_subject=$GIT_SUBJECT" >> $GITHUB_OUTPUT
-          # This hack is required to add a multiline output to GITHUB_OUTPUT
-          echo "git_body<<EOF" >> $GITHUB_OUTPUT
-          echo $GIT_BODY >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
         if: ${{ steps.create_tag.outputs.release == 'true' }}
