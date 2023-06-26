@@ -8,6 +8,11 @@ on:
     types:
       - closed
 
+env:
+  AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   git-release:
     if: github.event.pull_request.merged == true
@@ -41,8 +46,7 @@ jobs:
         id: git_info
         run: |
           GIT_SUBJECT=$(git log -1 --pretty=format:"%s")
-          # GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S")
-          GIT_BODY="test"
+          GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S")
           echo "git_subject=$GIT_SUBJECT" >> $GITHUB_OUTPUT
           # This hack is required to add a multiline output to GITHUB_OUTPUT
           echo "git_body<<EOF" >> $GITHUB_OUTPUT
