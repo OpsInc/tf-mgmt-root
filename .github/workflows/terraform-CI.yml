@@ -1,7 +1,7 @@
 ---
 # yamllint disable rule:line-length
 
-name: Terraform Lint PUSH
+name: Terraform Lint
 on:
   push:
     branches:
@@ -70,7 +70,7 @@ jobs:
             exit 1
           fi
 
-  apply:
+  apply-destroy:
     if: success() && github.event_name == 'pull_request'
     needs: [lint, git_version_gating]
     env:
