@@ -14,7 +14,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  git-release:
+  git-tag-release:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Post merge action
