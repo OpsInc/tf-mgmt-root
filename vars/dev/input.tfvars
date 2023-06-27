@@ -15,7 +15,7 @@ lambdas = [
   }
 ]
 
-s3 = ["frontend", "backup", "lambda-source-code"]
+s3 = ["frontend", "backup", "lambda-source-code", "pipeline-artifact"]
 
 waf_rules = [
   "AWSManagedRulesAmazonIpReputationList",
