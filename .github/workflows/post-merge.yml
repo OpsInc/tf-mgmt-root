@@ -1,5 +1,5 @@
 ---
-# yamllint disable rule:line-length
+# yamllint disable rule:line-length rule:truthy
 
 name: Post merge CI
 
@@ -8,105 +8,17 @@ on:
     types:
       - closed
 
-env:
-  AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
-  git-tag-release:
+  git-post-merge:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    name: Post-merge Git actions
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    uses: OpsInc/workflow-lib/.github/workflows/git-tag-release.yml@main
+    secrets: inherit
 
-      - name: Setup Git config
-        run: |
-          git config --local --add safe.directory $GITHUB_WORKSPACE
-
-      - name: Fetch git commit info
-        id: git_info
-        run: |
-          GIT_SUBJECT=$(git log -1 --pretty=format:"%s")
-          echo "git_subject=$GIT_SUBJECT" >>GITHUB_OUTPUT
-
-          echo $GIT_SUBJECT
-
-          GIT_BODY=$(git log -1 --format=%b HEAD | grep "\S") || GIT_BODY=""
-
-          if [ -z $GIT_BODY ]; then
-          	echo "git_body=$GIT_BODY" >>$GITHUB_OUTPUT
-          else
-            # This hack is required to add a multiline output to GITHUB_OUTPUT
-          	echo "git_body<<EOF" >>$GITHUB_OUTPUT
-          	echo $GIT_BODY >>$GITHUB_OUTPUT
-          	echo "EOF" >>$GITHUB_OUTPUT
-          fi
-
-      - name: Create latest tag
-        id: create_tag
-        run: |
-          git fetch --unshallow --tags
-          VERSION=$(cat VERSION)
-          LATEST_TAG=$(cat VERSION | tr -d 'v.')
-          CURRENT_TAG=$(git tag --list| tail -n1| tr -d 'v.')
-          if [[ $LATEST_TAG -gt $CURRENT_TAG ]]
-          then
-            git tag $VERSION
-            git push --tags
-            echo "tag_version=$VERSION" >> $GITHUB_OUTPUT
-            echo "release=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Release
-        if: ${{ steps.create_tag.outputs.release == 'true' }}
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.create_tag.outputs.tag_version }}
-          release_name: "${{ steps.create_tag.outputs.tag_version }}: ${{ steps.git_info.outputs.git_subject }}"
-          body: ${{ steps.git_info.outputs.git_body }}
-
-  terraform-docs:
-    if: success()
-    needs: git-tag-release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Render terraform docs inside the README.md and push changes back to PR branch
-        uses: terraform-docs/gh-actions@v1.0.0
-        with:
-          config-file: .terraform-docs.yml
-          recursive: true
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true"
-
-  terraform-deploy-dev:
-    if: success()
-    needs: [git-tag-release, terraform-docs]
-    env:
-      TFVARS_PATH: vars
-      ENVIRONMENT: dev
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-      - name: Terraform init
-        run: terraform init -backend-config=${TFVARS_PATH}/${ENVIRONMENT}/backend.tfvars -upgrade=true
-
-      - name: Terraform apply
-        id: plan
-        run: |
-          terraform apply -var-file=${TFVARS_PATH}/${ENVIRONMENT}/input.tfvars -lock-timeout=15m -auto-approve
+  terraform-CD:
+    if: github.event.pull_request.merged == true
+    needs: git-post-merge
+    uses: OpsInc/workflow-lib/.github/workflows/terraform-CD.yml@feature/add-terraform
+    with:
+      ENVIRONMENT: "dev"
+      TFVARS_PATH: "vars"
+    secrets: inherit
