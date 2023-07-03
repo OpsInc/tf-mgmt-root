@@ -12,11 +12,9 @@ on:
 jobs:
   git-version-gating:
     uses: OpsInc/workflow-lib/.github/workflows/git-version-gating.yml@main
-    secrets: inherit
 
   terraform-CI:
     uses: OpsInc/workflow-lib/.github/workflows/terraform-CI.yml@feature/add-terraform
-    needs: git-version-gating
     with:
       ENVIRONMENT: "sbx"
       TFVARS_PATH: "vars"
